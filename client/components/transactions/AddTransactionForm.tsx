@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
   },
-  input: {0
+  input: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
