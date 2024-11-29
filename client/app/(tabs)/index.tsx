@@ -1,22 +1,19 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import { Text, TextInput, Button, FlatList, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTransactions } from "../../contexts/TransactionsContext";
 import TotalDisplay from "../../components/transactions/TotalDisplay";
 import TransactionList from "../../components/transactions/TransactionList";
+import { v4 as uuidv4 } from "uuid";
 
+// use the TransactionsContext to display the total amount and the list of transactions
 export default function HomeScreen() {
   const { transactions, addTransaction } = useTransactions();
 
   // State for form inputs
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
+  const id = uuidv4();
 
   // Calculate total amount
   const totalAmount = transactions.reduce(
@@ -37,7 +34,11 @@ export default function HomeScreen() {
       return;
     }
 
-    addTransaction({ title, amount: parsedAmount });
+    addTransaction({
+      id: uuidv4(), // Generate unique ID
+      title: title.trim(),
+      amount: parsedAmount,
+    });
 
     // Clear inputs
     setTitle("");
@@ -45,7 +46,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Total Display */}
       <TotalDisplay total={totalAmount} />
 
@@ -53,7 +54,7 @@ export default function HomeScreen() {
       <TransactionList transactions={transactions} />
 
       {/* Add Transaction Form */}
-      <View style={styles.form}>
+      <SafeAreaView style={styles.form}>
         <TextInput
           style={styles.input}
           placeholder="Transaction Title"
@@ -68,8 +69,8 @@ export default function HomeScreen() {
           onChangeText={setAmount}
         />
         <Button title="Add Transaction" onPress={handleAddTransaction} />
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 }
 

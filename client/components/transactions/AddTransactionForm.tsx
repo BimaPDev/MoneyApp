@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useTransactions } from "../../contexts/TransactionsContext";
+import { v4 as uuidv4 } from "uuid";
 
 const AddTransactionForm = () => {
   const [item, setItem] = useState(""); // State for the item name
   const [amount, setAmount] = useState(""); // State for the transaction amount
+  const id = uuidv4(); // Generate a random ID for the transaction
 
   // Get the `addTransaction` function from the context
   const { addTransaction } = useTransactions();
@@ -25,7 +27,7 @@ const AddTransactionForm = () => {
       return;
     }
 
-    addTransaction({ title: item, amount: parsedAmount });
+    addTransaction({ id, title: item, amount: parsedAmount });
 
     // Reset the form fields
     setItem("");
